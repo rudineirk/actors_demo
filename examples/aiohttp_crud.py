@@ -1,8 +1,8 @@
+from asyncio import get_event_loop
 from http import HTTPStatus as status
 from uuid import uuid4
-from actors import Actor, Opera, rpc
-from asyncio import get_event_loop
 
+from actors import Actor, Opera, rpc
 from aiohttp import web
 
 USERS_DATABASE = {}
@@ -11,6 +11,8 @@ USERS_SERVICE = 'core.users'
 
 
 def validate(*args, **kwargs):
+    '''Adiciona validação dos dados
+    '''
     return True
 
 
@@ -76,8 +78,11 @@ opera.register(users)
 opera.register(store)
 opera.create_tasks()
 
+
 async def web_handler(request):
-    ret = await opera.request('core.users', 'get_user', )
+    ret = await opera.request(
+        'core.users',
+        'get_user', )
     return web.Response(text=ret.payload, status=ret.status)
 
 
